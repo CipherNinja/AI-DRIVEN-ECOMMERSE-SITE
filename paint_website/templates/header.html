@@ -1,0 +1,65 @@
+{% block content %}
+{% load static %}
+<style>
+    header {
+        background-image: url({% static 'resources/header-cover.png' %});
+        color: #333;
+        background-size: cover;
+        position: relative;
+    }
+
+    img.corp-logo {
+        position: absolute;
+        left: 11px;
+        top: 10px;
+        border-radius: 34px;
+        max-height: 71px;
+    }
+    img.corp-logo-two {
+        position: absolute;
+        right: 11px;
+        bottom: 39px;
+        border-radius: 7px;
+        max-height: 71px;
+    }
+
+    h1 {
+        margin-left: 70px;
+    }
+
+    p.since-year {
+        position: absolute;
+        left: 25px;
+        bottom: 5px;
+        color: #333;
+    }
+
+    @media only screen and (max-width: 767px) {
+        img.corp-logo {
+            display: none;  /* Hide the logo on small screens */
+        }
+
+        img.corp-logo-two {
+            display: none;  /* Hide the logo on small screens */
+        }
+
+        h1 {
+            margin-left: 10px;  /* Adjust the margin for small screens */
+        }
+
+        p.since-year {
+            display: none;  /* Hide the "Since 1999" text on small screens */
+        }
+    }
+</style>
+
+<header>
+    <img src="{% static 'resources/new-logo.png' %}" alt="Corporation Logo" class="corp-logo">
+    <h1><i class="fas fa-shop"></i> Shalimar Sales Corporation</h1>
+    <p class="since-year"><i class="fas fa-calendar-alt"></i> Since 1999</p>
+    <a href="{% url 'we-are-gniotians' %}" style="text-decoration: none; color: azure;">
+        <p style="color: #333;"><i class="fas fa-map-marker-alt"></i> Navipur Khurd, Hathras, Uttar Pradesh</p>
+    </a>
+    <img src="{% static 'resources/paratech-logo.png' %}" alt="Corporation Logo" class="corp-logo-two">
+</header>
+{% endblock %}
