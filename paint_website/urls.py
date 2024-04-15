@@ -22,7 +22,7 @@ urlpatterns = [
     path("we-are-gniotians/Vijay-Sukla/",views.Hod_sir_it,name="we-are-gniotians-vijay"),
     path("logout/",views.Logout_User,name="logout"),
     path("myorder/",views.Order_Tracking_Sytem,name="myorder"),
-    # path("mydata/",views.predict_products_view,name="predict"),
+     path('high-demand-products/', views.high_demand_products_view, name='high_demand_products'),
     path("alldata/",views.predict_all_users_view,name="predict_all"),
 
 ]

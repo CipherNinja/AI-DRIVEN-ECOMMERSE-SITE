@@ -10,8 +10,8 @@ from django.core.mail import send_mail
 from colorama import Fore
 from .prediction import predict_products
 from django.http import JsonResponse
-from .deep_learning import predict_product
-
+from .ssl_for_user_naive_bayee_model import predict_product
+from .inventory_management import predict_high_demand_products
 # Create your views here.
 
 def home_page_register_view(request):
@@ -405,6 +405,14 @@ def predict_all_users_view(request):
         all_predictions[user.username] = {'user_id': user_id, 'recommended_products': recommended_products}
 
     return JsonResponse(all_predictions)
+
+def high_demand_products_view(request):
+    response_data = predict_high_demand_products()
     
-
-
+    # Manually construct a dictionary from response_data
+    json_data = {
+        'predicted_products': response_data['predicted_products'],
+        'mse': response_data['mse']
+    }
+    
+    return JsonResponse(json_data)
