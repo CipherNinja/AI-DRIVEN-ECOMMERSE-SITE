@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shalimar Sales Corp</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f8f9fa;
+        }
+
+        header {
+            background-color: #2994ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav {
+            background-color: #f8f9fa;
+            overflow: hidden;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: #343a40;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 0 -10px;
+        }
+
+        .product {
+            flex-basis: calc(50% - 20px);
+            margin: 10px;
+            background-color: #ffffff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            max-width: 350px;
+        }
+
+        .product img {
+            width: 100%;
+            height: 60vh;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .product h2 {
+            color: #212121;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .product p {
+            color: #757575;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .product .price {
+            color: #d32f2f;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #2994ff;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .quantity-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-container select {
+            margin-right: 10px;
+            padding: 8px;
+        }
+
+        .order-now {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .search-bar {
+            position: relative;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .search-bar input[type="text"] {
+            width: calc(100% - 40px);
+            padding: 8px;
+            margin-top: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .search-bar button {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        @media screen and (max-width: 967px) {
+            .product {
+                flex-basis: calc(90% - 20px);
+            }
+            .quantity-container select {
+                margin-right: 0px;
+            }
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search by Product Name, Price, Brand ...">
+        <button id="speechToTextBtn">
+            <i class="fas fa-microphone"></i>
+        </button>
+    </div>
+    {% include 'navbar.html' %}
+    {% include 'messages.html' %}
+    <section>
+        <div class="products">
+            {% if products %}
+                {% for item in products reversed %}
+            <div class="product">
+                <img src="{{ item.product_image.url }}" alt="{{item.product_name}}" id="{{item.product_name}}">
+                <h2>{{item.product_name}}</h2>
+                <p>{{item.product_detail}}</p>
+                <div class="price">Price: &#8377;{{item.product_price}}</div>
+                {% if user.is_authenticated %}
+                <div class="quantity-container">
+                    <form action="{% url 'products' %}" method="post">
+                        {% csrf_token %}
+                        <select id="quantity" name="quantity">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <input type="hidden" name="product_id" value="{{item.id}}">
+                        <button class="order-now" type="submit">
+                            <i class="fas fa-shopping-cart"></i> Order Now
+                        </button>
+                    </form>
+                    <form action="{% url 'products' %}" method="get">
+                        <select id="quantity" name="quantity-add" style="margin-left: 10px;">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                        <button class="order-now" type="submit" style="margin-left: 1px;">
+                            <input type="hidden" name="product__id" value="{{item.id}}">
+                            <i class="fas fa-shopping-bag"></i> Add Cart
+                        </button>
+                    </form>
+                </div>
+                    {% else %}
+                    <div class="quantity-container">
+                        <form action="{% url 'login_required' %}">
+                            <select id="quantity" name="quantity">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                            <button class="order-now" type="submit">
+                                <i class="fas fa-shopping-cart"></i> Order Now
+                            </button>
+                            <button class="order-now" type="submit">
+                                <i class="fas fa-shopping-bag"></i> Add Cart
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+            </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% include 'bot_pannel.html' %}
+    </section>
+    {% include 'footer.html' %}
+
+    <script>
+        // Variable to store the speech recognition object
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US'; // Set the language
+        
+        var isMicOn = false; // Variable to track whether the microphone is on or off
+
+        // Get the input field and listen for input event
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function () {
+            const searchTerm = this.value.toLowerCase().trim();
+            const products = document.querySelectorAll('.product');
+            
+            // Loop through each product and hide/show based on the search term
+            products.forEach(product => {
+                const productName = product.querySelector('h2').innerText.toLowerCase();
+                const productPrice = product.querySelector('.price').innerText.toLowerCase();
+                if (productName.includes(searchTerm) || productPrice.includes(searchTerm)) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        });
+
+        // Add event listener to the button
+        document.getElementById('speechToTextBtn').addEventListener('click', function () {
+            if (isMicOn) {
+                recognition.stop();
+                isMicOn = false;
+                this.innerHTML = '<i class="fas fa-microphone"></i>';
+            } else {
+                recognition.start();
+                isMicOn = true;
+                this.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+            }
+        });
+
+        // Handle speech recognition result
+        recognition.onresult = function(event) {
+            var transcript = event.results[event.resultIndex][0].transcript.trim();
+            searchInput.value = transcript;
+            searchInput.dispatchEvent(new Event('input'));
+        };
+
+        // Handle speech recognition errors
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            recognition.stop();
+            isMicOn = false;
+            document.getElementById('speechToTextBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+        };
+
+        // Handle speech recognition end
+        recognition.onend = function() {
+            isMicOn = false;
+            document.getElementById('speechToTextBtn').innerHTML = '<i class="fas fa-microphone"></i>';
+        };
+    </script>
+</body>
+</html>
