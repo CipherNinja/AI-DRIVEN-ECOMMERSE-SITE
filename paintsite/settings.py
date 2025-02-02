@@ -93,9 +93,9 @@ WHITENOISE_USE_HTTPS = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'paintsite01',
-        'USER':'root',
-        'PASSWORD':'9069076975',
+        'NAME': 'shalimar_sales', #paintsite01
+        'USER':'shalimar_priyesh', #root
+        'PASSWORD':'kevineleven', #9069076975
         'HOST':'localhost',
         'PORT':'3306'
 
