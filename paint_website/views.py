@@ -7,11 +7,7 @@ from django.contrib import messages
 from django.conf import settings
 from django.db.models import F, ExpressionWrapper, FloatField
 from django.core.mail import send_mail
-from colorama import Fore
-from .prediction import predict_products
 from django.http import JsonResponse
-from .ssl_for_user_naive_bayee_model import predict_product
-from .inventory_management import predict_high_demand_products
 # Create your views here.
 
 def home_page_register_view(request):
@@ -316,103 +312,10 @@ def My_Cart_View_Purchase_All(request):
         messages.warning(request,"Login and try again !")
         return redirect('login_required')
     
-
-def Give_credits(request):
-    return render(
-        request,
-        "gniotians_page.html",
-        {}
-    )
-def Free_Credit_To_Sahil(request):
-    return render(
-        request,
-        "free_credit_wale.html"
-    )
-
+    
 def Logout_User(request):
     logout(request)
     messages.success(request," Logged out ")
     return redirect("home")
 
-def Ishwar_Singh(request):
-    return render(
-        request,
-        "ishwar_sir.html"
-    )
-def Deepak_sir_it(request):
-    return HttpResponse("Under Development")
-def Hod_sir_it(request):
-    return redirect("https://www.linkedin.com/in/dr-vijay-shukla/")
 
-
-'''ORDER DELIVERY SYSTEM'''
-
-def Order_Tracking_Sytem(request):
-    try:
-        if request.method == "GET":
-            encryption_key = request.GET.get("orderID")
-        order_details = AllOrderDetail.objects.filter(user=request.user, delivery_status=False,delivery_id=encryption_key)
-        order_data = order_details.annotate(
-            total_price=ExpressionWrapper(
-                F('product__product_price') * F('quantity'),
-                output_field=FloatField()
-            )
-        ).values_list('product__product_name', 'quantity', 'total_price', 'order_date')
-
-       
-        api = [
-            {
-                'name': name,
-                'qtty': qtty,
-                'price': price,
-                'date': f"{order_date.day}/{order_date.month}/{order_date.year}"
-            }
-            for name, qtty, price, order_date in order_data
-        ]
-
-        print(Fore.RED + f"[.] DEEP LEARNING RESPONSE \n{api}")
-        return render(
-            request,
-            "delivery_traker.html",
-            {'api': api}
-        )
-    except AllOrderDetail.DoesNotExist as Error:
-        messages.success(request, "You have not placed any order")
-        return redirect('home')
-    
-# def predict_products_view(request):
-#     if request.user.is_authenticated:
-#         all_users = User.objects.all()
-#         all_predictions = {}
-
-#         for user in all_users:
-#             user_id = user.id
-#             recommended_products = predict_products(user_id)
-#             all_predictions[user.username] = {'user_id': user_id, 'recommended_products': recommended_products}
-
-#         return JsonResponse(all_predictions)
-#     else:
-#         # Handle unauthenticated user
-#         return JsonResponse({'error': 'User is not authenticated'})
-    
-def predict_all_users_view(request):
-    all_users = User.objects.all()
-    all_predictions = {}
-
-    for user in all_users:
-        user_id = user.id
-        recommended_products = predict_product(user_id)
-        all_predictions[user.username] = {'user_id': user_id, 'recommended_products': recommended_products}
-
-    return JsonResponse(all_predictions)
-
-def high_demand_products_view(request):
-    response_data = predict_high_demand_products()
-    
-    # Manually construct a dictionary from response_data
-    json_data = {
-        'predicted_products': response_data['predicted_products'],
-        'mse': response_data['mse']
-    }
-    
-    return JsonResponse(json_data)

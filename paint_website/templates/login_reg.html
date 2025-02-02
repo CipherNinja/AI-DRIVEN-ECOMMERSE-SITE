@@ -307,17 +307,7 @@
 </head>
 <body>
     {% include 'header.html' %}
-    <nav>
-        <a href="{% url 'home' %}" title="Visit our homepage"><i class="fas fa-shop"> home</i></a>
-        <a href="{% url 'staff' %}" title="Login to staff Area"><i class="fas fa-user"></i> Staff Login</a>
-        <a href="{% url 'contact' %}" title="Contact our team"><i class="fas fa-envelope"></i> Contact Us</a>
-        <a href="{% url 'products' %}" title="Browse our product catalog"><i class="fas fa-eye"></i> View Product</a>
-        <a href="#forms"><i class="fas fa-user" title="User Account details and order management"></i> Logs</a>
-        <a href="{% url 'developer' %}" title="Meet our developers"><i class="fas fa-code"></i> Developer</a>
-        {% if user.is_authenticated %}
-            <a href="{% url 'logout' %}" title="Logout from your account"><i class="fa fa-sign-out"></i> Logout</a>
-        {% endif %}
-    </nav>
+    {% include 'navbar.html' %}
     {% include 'messages.html' %}
     <section>
         <div class="advertising">
@@ -426,7 +416,7 @@
                 <p><i class="fas fa-map-marker-alt"></i> <strong>Address:</strong> ${address}</p>
                 {% if order_details %}
                 <h3>Active Orders</h3>
-                    <a class="cart" href="{% url 'cart' %}">Go to <i class="fas fa-shopping-bag"></i> Cart</a>
+                    <a class="cart" href="{% url 'cart' %}"><i class="fas fa-shopping-bag"></i> Visit Cart</a>
         <table>
             <thead>
                 <tr>
@@ -454,7 +444,7 @@
         </table>
         <br>
         <h3>Delivered Orders</h3>
-                    <a class="cart" href="{% url 'myorder' %}"><i class="fas fa-map-marker"></i> Track Orders </a>
+                    <a class="cart" href="{% url 'cart' %}"><i class="fas fa-map-marker"></i> View Products </a>
         <table>
             <thead>
                 <tr>
@@ -524,7 +514,7 @@
                 const url = window.location.href
                 const login_required = window.location.origin+"/#forms"
                 let message_field = document.getElementsByClassName("login_reg_message")[0]
-                let message = "You need to Login or register here";
+                let message = "You need to Login or Register here";
                 let index = 0;
             
                 function displayLetterByLetter() {

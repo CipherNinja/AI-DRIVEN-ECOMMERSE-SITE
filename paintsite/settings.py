@@ -25,17 +25,24 @@ SECRET_KEY = 'django-insecure-1pyxpv)v+v91(nqmm5xn@0*cp#6#$omb%)o3bdej3qw_&_5r%l
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","127.0.0.1",".ngrok-free.app",]
+ALLOWED_HOSTS = ["localhost",'shalimarsalescorporation.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://*.ngrok-free.app','https://*.127.0.0.1',]
 
-SECURE_SSL_REDIRECT = False
-SECURE_SSL_HOST = [".ngrok-free.app",'https://*.ngrok-free.app']
-SECURE_SSL_PORT = 443
+# # Security settings
+SECURE_CONTENT_TYPE_NOSNIFF = True  # Prevents browsers from MIME-sniffing files
+SECURE_BROWSER_XSS_FILTER = True    # Enables XSS filtering by the browser
+
+# Enforce HTTPS
+SECURE_SSL_REDIRECT = True
+SECURE_HSTS_SECONDS = 31536000  # 1 year; adjust based on preference
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'paint_website',
+    
 
 ]
 
@@ -156,3 +164,51 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Admin Portal",
+    "site_header": "Shalimar's CRM",
+    "site_brand": "Shalimar's",
+    "welcome_sign": "Welcome to the Shalimar Sales Corporation",
+    "search_model": "auth.User",
+    "user_avatar": None,
+
+    # UI Customizations
+    "topmenu_links": [
+        # Define other links here
+    ],
+    
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "slate",
+    "dark_mode_theme": "slate",
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success"
+    }
+}

@@ -5,11 +5,9 @@
     <a href="{% url 'products' %}" title="Browse our product catalog"><i class="fas fa-eye"></i> View Product</a>
     {% if user.is_authenticated %}
     <a href="{% url 'cart' %}" title="View your shopping cart"><i class="fas fa-shopping-bag"></i> Cart</a>
+    <a href="{% url 'logout' %}" title="Logout from your account"><i class="fa fa-sign-out"></i> Logout</a>
     {% else %}
     <a href="{% url 'login_required' %}" title="Login to access your cart"><i class="fas fa-shopping-bag"></i> Cart</a>
     {% endif %}
-    <a href="{% url 'developer' %}" title="Meet our developers"><i class="fas fa-code"></i> Developer</a>
-    {% if user.is_authenticated %}
-    <a href="{% url 'logout' %}" title="Logout from your account"><i class="fa fa-sign-out"></i> Logout</a>
-    {% endif %}
+    
 </nav>
