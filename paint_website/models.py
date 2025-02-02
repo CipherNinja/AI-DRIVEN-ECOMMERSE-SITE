@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
 from datetime import datetime
-from hashids import Hashids
+
 # Create your models here.
 
 class Our_Product(models.Model):
@@ -47,20 +47,12 @@ class UserInfo(models.Model):
     def __str__(self):
         return f"{self.user} {self.address} {self.phone_number}"
 
-hashids = Hashids(salt="your_default_salt_here", min_length=10) 
 class AllOrderDetail(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Our_Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     delivery_status = models.BooleanField(default=False)
-    delivery_id = models.CharField(max_length=50,default=hashids.encode(0))
-    delivery_date = models.DateTimeField(default=datetime.now)
     order_date = models.DateTimeField(auto_now_add=True)
-    def save(self, *args, **kwargs):
-            # Generate and save encrypted ID before saving the object
-            if not self.delivery_id:
-                self.delivery_id = hashids.encode(self.pk)
-            super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Order for {self.user.username} --> {self.product.product_name}\n Quantity: {self.quantity}\n Price: {float(self.product.product_price) * float(self.quantity)}\nDelivery status{self.delivery_status}\n Order Date: {self.order_date}"
