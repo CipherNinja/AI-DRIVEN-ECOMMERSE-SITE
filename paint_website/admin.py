@@ -21,7 +21,7 @@ class DocumentModelAdmin(admin.ModelAdmin):
 
 @admin.register(AllOrderDetail)
 class DocumentModelAdmin(admin.ModelAdmin):
-    list_display = ["id","user","product","quantity","delivery_status","delivery_id","delivery_date","order_date"]
+    list_display = ["id","user","product","quantity","delivery_date","order_date"]
 
 @admin.register(ShoppingCart)
 class DocumentModelAdmin(admin.ModelAdmin):
